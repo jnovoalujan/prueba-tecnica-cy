@@ -26,9 +26,19 @@ When("adiciono toppings, comentario y agrego el producto a la canasta", () => {
 
 Then ("realizara el pago de manera exitosa", ()=> {
   cy.get('#button-checkout-duna').click();
-  cy.get("[title='d_una_checkout']", { timeout: 35000 }).its("0.contentDocument.body").then(($bodyFrame) => {
-    cy.wrap($bodyFrame).find("[name='email']", { timeout: 35000 }).type("jnovoalujan@gmail.com");
-  })
+  cy.get("[title='d_una_checkout']", { timeout: 55000 }).its("0.contentDocument.body").as('frame').then(cy.wrap);
+  cy.get('@frame').find("[name='email']", {timeout: 30000}).type("jnovoalujan@gmail.com");
+  cy.get('@frame').find("[name='first_name']", {timeout: 3000}).type("Julian");
+  cy.get('@frame').find("[name='last_name']", {timeout: 3000}).type("Novoa");
+  cy.get('@frame').find("[name='phone']", {timeout: 3000}).type("3013126292");
+  cy.get('@frame').find("[name='identity_document']", {timeout: 3000}).type("1036657374");
+  cy.get('@frame').find("[data-testid='address-map-input']").click();
+  cy.get('@frame').find("[name='address']", {timeout: 3000}).type("Calle 93 #19-75");
+  cy.get('@frame').find("span:contains('Calle 93 #19-75')").click();
+  cy.get('@frame').find("button:contains('Confirmar')").click();
+  cy.get('@frame').find("#next_btn-button").click();
+  
+  
 });
 
 /*cy.frameLoaded('[id="add-to-cart-modal"] > div[0]');
