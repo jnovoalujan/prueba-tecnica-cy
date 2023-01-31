@@ -15,18 +15,19 @@ When(
 );
 
 When("adiciono toppings, comentario y agrego el producto a la canasta", () => {
-
-  cy.get('.add-to-cart-modal.modal.hide.fade', { timeout: 5000 }).then(($dialog)=>{
-    cy.wrap($dialog).find("[data-id='93'] > .d-flex > .quantity-select-related-product-increase").click();
+  
+    cy.get("[data-id='93'] > .d-flex > .quantity-select-related-product-increase").click();
     cy.get('[data-id="392"] > .d-flex > .quantity-select-related-product-increase').click();
     cy.get('#options_additional_information').type("Prueba tecnica de Julian Novoa")
     cy.get('#add-to-cart-button').click();
-    });
 });
 
 Then ("realizara el pago de manera exitosa", ()=> {
+  //Se da click en pagar
   cy.get('#button-checkout-duna').click();
+  //Se obtiene el body del frame y se guarda en 'frame'
   cy.get("[title='d_una_checkout']", { timeout: 55000 }).its("0.contentDocument.body").as('frame').then(cy.wrap);
+  //Se accede a la variable frame y se diligencia todos los campos correspondientes al checkout
   cy.get('@frame').find("[name='email']", {timeout: 30000}).type("jnovoalujan@gmail.com");
   cy.get('@frame').find("[name='first_name']", {timeout: 3000}).type("Julian");
   cy.get('@frame').find("[name='last_name']", {timeout: 3000}).type("Novoa");
@@ -36,6 +37,7 @@ Then ("realizara el pago de manera exitosa", ()=> {
   cy.get('@frame').find("[name='address']", {timeout: 3000}).type("Calle 93 #19-75");
   cy.get('@frame').find("span:contains('Calle 93 #19-75')").click();
   cy.get('@frame').find("button:contains('Confirmar')").click();
+  //Se da click en continuar con el pago
   cy.get('@frame').find("#next_btn-button").click();
   
   
